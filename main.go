@@ -23,22 +23,30 @@ func main() {
 		return
 	}
 
-	// get config values from user
-	_ = getUserInput(config.RequiredParams)
+	// get config values from user to be used in setup
+	getUserInput(config)
+
+	// fmt.Println(configValues)
 
 	// Use the configuration values to create the container
 	fmt.Printf("Creating container with image '%s'...\n", config.ImageName)
 
-	// cli := createDockerClient()
+	cli := createDockerClient()
 
-	// fmt.Println("Pulling Docker image...")
+	fmt.Println("Pulling Docker image...")
 
-	// pullDockerImage(cli, configValues.ImageName)
+	pullDockerImage(cli, config.ImageName, config.Params["tag"])
 
-	// fmt.Println("Running Docker container...")
-	// runDockerContainer(cli, imageName)
+	fmt.Println("Running Docker container...")
+	runDockerContainer(cli, config)
 
-	// Perform tasks with the running container here...
+	config.GenerateConnectionString(config)
+
+	if len(config.ConnectionString) > 0 {
+		fmt.Println("Connection string:", config.ConnectionString)
+	}
+
+	fmt.Printf("Use \"docker rm %s\" to remove container\n", config.Params["containerName"])
 
 	// fmt.Println("Stopping and removing Docker container...")
 	// err = stopAndRemoveContainer(cli, containerID)

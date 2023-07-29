@@ -10,6 +10,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
+	"github.com/docker/go-connections/nat"
 )
 
 func createDockerClient() *client.Client {
@@ -37,7 +38,7 @@ func createDockerClient() *client.Client {
 	return cli
 }
 
-func pullDockerImage(cli *client.Client, imageName string) {
+func pullDockerImage(cli *client.Client, imageName string, imageTag string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 240*time.Second)
 	defer cancel()
 
@@ -49,15 +50,43 @@ func pullDockerImage(cli *client.Client, imageName string) {
 	io.Copy(os.Stdout, reader)
 }
 
-func runDockerContainer(cli *client.Client, imageName string) string {
+func runDockerContainer(cli *client.Client, config Configuration) string {
 	ctx := context.Background()
-	resp, err := cli.ContainerCreate(ctx, &container.Config{
+	imageName := config.ImageName
+	hostIp := config.HostIp
+	port := config.Params["port"]
+	containerName := config.Params["containerName"]
+
+	// get db name from config
+	// dbName := config.RequiredParams["db"]
+	// user := config.RequiredParams["user"]
+	// password := config.RequiredParams["password"]
+
+	containerConfig := container.Config{
 		Image: imageName,
-	}, nil, nil, nil, "")
+		// Env: []string{
+		// 	"MONGO_INITDB_DATABASE=" + dbName,
+		// 	"MONGO_INITDB_ROOT_USERNAME=" + user,
+		// 	"MONGO_INITDB_ROOT_PASSWORD=" + password,
+		// },
+	}
+	hostConfig := container.HostConfig{
+		PortBindings: nat.PortMap{
+			nat.Port(port + "/tcp"): []nat.PortBinding{
+				{
+					HostIP:   hostIp,
+					HostPort: port,
+				},
+			},
+		},
+	}
+
+	resp, err := cli.ContainerCreate(ctx, &containerConfig, &hostConfig, nil, nil, containerName)
 	if err != nil {
 		panic(err)
 	}
 	containerID := resp.ID
+
 	if err := cli.ContainerStart(ctx, containerID, types.ContainerStartOptions{}); err != nil {
 		panic(err)
 	}

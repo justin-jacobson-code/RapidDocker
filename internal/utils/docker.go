@@ -58,24 +58,11 @@ func RunDockerContainer(cli *client.Client, config dbconfig.Configuration) strin
 	port := config.Params["port"]
 	containerName := config.Params["containerName"]
 
-	// get db name from config
-	dbName := config.Params["db"]
-	user := config.Params["user"]
-	password := config.Params["password"]
-
-	// var env []string
-
-	// // loop over environment variables and add them to env slice
-	// for _, envVar := range EnvironmentVariables {
-	// }
+	config.EnvVarSetup(&config)
 
 	containerConfig := container.Config{
 		Image: imageName,
-		Env: []string{
-			"MONGO_INITDB_DATABASE=" + dbName,
-			"MONGO_INITDB_ROOT_USERNAME=" + user,
-			"MONGO_INITDB_ROOT_PASSWORD=" + password,
-		},
+		Env:   config.EnvironmentVariables,
 	}
 	hostConfig := container.HostConfig{
 		PortBindings: nat.PortMap{

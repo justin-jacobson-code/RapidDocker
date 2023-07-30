@@ -11,8 +11,18 @@ func mongoConnectionString(config *Configuration) {
 	if len(config.Params["username"]) > 0 && len(config.Params["password"]) > 0 {
 		connectionString = fmt.Sprintf("mongodb://%s:%s@localhost:%s",
 			config.Params["username"],
-			"**********",
+			"******",
 			config.Params["port"])
 	}
 	config.ConnectionString = connectionString
+}
+
+func mongoEnvVarSetup(config *Configuration) {
+	if config.UseAdvancedOptions {
+		// if user and password are provided, update environment variables
+		config.EnvironmentVariables = []string{
+			"MONGO_INITDB_ROOT_USERNAME=" + config.Params["username"],
+			"MONGO_INITDB_ROOT_PASSWORD=" + config.Params["password"],
+		}
+	}
 }

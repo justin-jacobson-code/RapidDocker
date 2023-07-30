@@ -9,7 +9,7 @@ import (
 	"github.com/justinj96/RapidDocker/internal/dbconfig"
 )
 
-func GetUserInput(config dbconfig.Configuration) {
+func GetUserInput(config *dbconfig.Configuration) {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	params := config.Params
@@ -27,8 +27,18 @@ func GetUserInput(config dbconfig.Configuration) {
 		for key, value := range params {
 			fmt.Printf("Enter %s (%s): ", key, value)
 			scanner.Scan()
-			if len(scanner.Text()) > 0 {
-				config.Params[key] = scanner.Text()
+
+			input := scanner.Text()
+			// check if input provided for username or password
+			// if no input provided, ask again
+			for (key == "username" || key == "password") && len(input) == 0 {
+				fmt.Printf("%s is required, please enter: ", key)
+				scanner.Scan()
+				input = scanner.Text()
+			}
+
+			if len(input) > 0 {
+				config.Params[key] = input
 			}
 		}
 	}

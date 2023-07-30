@@ -26,7 +26,7 @@ func main() {
 		return
 	}
 
-	utils.GetUserInput(config)
+	utils.GetUserInput(&config)
 
 	// Use the configuration values to create the container
 	fmt.Printf("Creating container with image '%s'...\n", config.ImageName)
@@ -41,10 +41,7 @@ func main() {
 	utils.RunDockerContainer(cli, config)
 
 	config.GenerateConnectionString(&config)
-	fmt.Println("Connection string:", config.ConnectionString)
-	// if len(config.ConnectionString) > 0 {
-	// 	fmt.Println("Connection string:", config.ConnectionString)
-	// }
 
+	fmt.Println("Connection string:", config.ConnectionString)
 	fmt.Printf("Use \"docker rm %s\" to remove container\n", config.Params["containerName"])
 }

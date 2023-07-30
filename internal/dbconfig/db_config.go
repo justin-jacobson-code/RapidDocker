@@ -10,9 +10,9 @@ type Configuration struct {
 
 	// connection strings are only printed to the console for convienience
 	// the program itself does not use them, feel free to leave them out
-	ConnectionString         string                               // optional
-	GenerateConnectionString func(config *Configuration)           // optional
-	EnvVarSetup              func(config Configuration) []string // optional
+	ConnectionString         string                      // optional
+	GenerateConnectionString func(config *Configuration) // optional
+	EnvVarSetup              func(config *Configuration) // optional
 }
 
 // Configurations is a map that stores the configurations for different container types.
@@ -25,18 +25,13 @@ var Configurations = map[string]Configuration{
 			"port":          "27017",
 			"username":      "",
 			"password":      "",
-			"database":      "go",
 			"containerName": "mongo-rapid-docker",
 			"tag":           "latest",
 		},
 
-		EnvironmentVariables: []string{
-			"MONGO_INITDB_ROOT_USERNAME",
-			"MONGO_INITDB_ROOT_PASSWORD",
-			"MONGO_INITDB_DATABASE",
-		},
-
+		EnvironmentVariables:     []string{},
 		ConnectionString:         "mongodb://localhost:27017",
 		GenerateConnectionString: mongoConnectionString,
+		EnvVarSetup:              mongoEnvVarSetup,
 	},
 }

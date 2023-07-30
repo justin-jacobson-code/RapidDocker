@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"context"
@@ -11,9 +11,10 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
+	"github.com/justinj96/RapidDocker/internal/dbconfig"
 )
 
-func createDockerClient() *client.Client {
+func CreateDockerClient() *client.Client {
 	// Set the desired API version using the client.WithVersion option
 	opts := []client.Opt{
 		client.FromEnv,
@@ -38,7 +39,7 @@ func createDockerClient() *client.Client {
 	return cli
 }
 
-func pullDockerImage(cli *client.Client, imageName string, imageTag string) {
+func PullDockerImage(cli *client.Client, imageName string, imageTag string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 240*time.Second)
 	defer cancel()
 
@@ -50,7 +51,7 @@ func pullDockerImage(cli *client.Client, imageName string, imageTag string) {
 	io.Copy(os.Stdout, reader)
 }
 
-func runDockerContainer(cli *client.Client, config Configuration) string {
+func RunDockerContainer(cli *client.Client, config dbconfig.Configuration) string {
 	ctx := context.Background()
 	imageName := config.ImageName
 	hostIp := config.HostIp
@@ -58,17 +59,23 @@ func runDockerContainer(cli *client.Client, config Configuration) string {
 	containerName := config.Params["containerName"]
 
 	// get db name from config
-	// dbName := config.RequiredParams["db"]
-	// user := config.RequiredParams["user"]
-	// password := config.RequiredParams["password"]
+	dbName := config.Params["db"]
+	user := config.Params["user"]
+	password := config.Params["password"]
+
+	// var env []string
+
+	// // loop over environment variables and add them to env slice
+	// for _, envVar := range EnvironmentVariables {
+	// }
 
 	containerConfig := container.Config{
 		Image: imageName,
-		// Env: []string{
-		// 	"MONGO_INITDB_DATABASE=" + dbName,
-		// 	"MONGO_INITDB_ROOT_USERNAME=" + user,
-		// 	"MONGO_INITDB_ROOT_PASSWORD=" + password,
-		// },
+		Env: []string{
+			"MONGO_INITDB_DATABASE=" + dbName,
+			"MONGO_INITDB_ROOT_USERNAME=" + user,
+			"MONGO_INITDB_ROOT_PASSWORD=" + password,
+		},
 	}
 	hostConfig := container.HostConfig{
 		PortBindings: nat.PortMap{

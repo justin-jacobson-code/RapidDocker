@@ -4,6 +4,7 @@ RapidDocker is a tool to quickly create a docker container for your project. Cur
 
 ## Setup
 First you'll need to have Go installed. You can download it [here](https://golang.org/dl/).
+Along with Docker, which you can download [here](https://docs.docker.com/get-docker/).
 
 Then you can compile RapidDocker by running:
 ```bash

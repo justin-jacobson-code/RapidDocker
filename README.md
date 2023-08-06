@@ -30,7 +30,7 @@ rapid-docker
 - Neo4j
 
 ## Planned Features
-- [] Persist data
-- [] Seperate username/password from advanced options
-- [] Add support for more databases
-- [] Add support for more advanced options
+- Persist data
+- Seperate username/password from advanced options
+- Add support for more databases
+- Add support for more advanced options

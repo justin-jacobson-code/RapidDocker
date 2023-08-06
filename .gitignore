@@ -1,1 +1,5 @@
 .vscode
+
+# avoid committing binary
+RapidDocker
+rapid-docker

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/justinj96/RapidDocker/internal/dbconfig"
-	"github.com/justinj96/RapidDocker/internal/utils"
+	"github.com/justin-jacobson-code/RapidDocker/internal/dbconfig"
+	"github.com/justin-jacobson-code/RapidDocker/internal/utils"
 )
 
 func main() {

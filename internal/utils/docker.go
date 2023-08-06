@@ -11,7 +11,7 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
-	"github.com/justinj96/RapidDocker/internal/dbconfig"
+	"github.com/justin-jacobson-code/RapidDocker/internal/dbconfig"
 )
 
 func CreateDockerClient() *client.Client {

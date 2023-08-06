@@ -1,4 +1,4 @@
-module github.com/justinj96/RapidDocker
+module github.com/justin-jacobson-code/RapidDocker
 
 go 1.20
 

@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/justinj96/RapidDocker/internal/dbconfig"
+	"github.com/justin-jacobson-code/RapidDocker/internal/dbconfig"
 )
 
 func GetUserInput(config *dbconfig.Configuration) {

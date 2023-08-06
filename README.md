@@ -16,3 +16,21 @@ To setup and run a database container for your project, run:
 ```bash
 rapid-docker
 ```
+
+## Supported Databases
+- MongoDB
+- Postgresql
+
+## Potential Databases
+- MySQL
+- Redis
+- MariaDB
+- Cockroach
+- Cassandra
+- Neo4j
+
+## Planned Features
+- [] Persist data
+- [] Seperate username/password from advanced options
+- [] Add support for more databases
+- [] Add support for more advanced options

@@ -21,6 +21,7 @@ var Configurations = map[string]Configuration{
 		ImageName:          "mongo",
 		HostIp:             "0.0.0.0",
 		UseAdvancedOptions: false,
+
 		Params: map[string]string{
 			"port":          "27017",
 			"username":      "",
@@ -33,5 +34,24 @@ var Configurations = map[string]Configuration{
 		ConnectionString:         "mongodb://localhost:27017",
 		GenerateConnectionString: mongoConnectionString,
 		EnvVarSetup:              mongoEnvVarSetup,
+	},
+
+	"postgres": {
+		ImageName:          "postgres",
+		HostIp:             "0.0.0.0",
+		UseAdvancedOptions: false,
+
+		Params: map[string]string{
+			"port":          "5432",
+			"username":      "postgres",
+			"password":      "",
+			"containerName": "postgres-rapid-docker",
+			"tag":           "latest",
+		},
+
+		EnvironmentVariables:     []string{},
+		ConnectionString:         "postgres://postgres@localhost:5432",
+		GenerateConnectionString: postgresConnectionString,
+		EnvVarSetup:              postgresEnvVarSetup,
 	},
 }
